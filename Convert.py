@@ -10,7 +10,7 @@ def converterPDFS(alvo_dir):
 
     # CAMINHO DA PASTA
     script_dir = os.path.dirname(__file__)
-    poppler_dir = os.path.join(script_dir, "poppler-24.08.0", "Library", "bin")
+    poppler_dir = os.path.join(script_dir, "dependencies", "poppler-24.08.0", "Library", "bin")
     convertidos_dir = os.path.join(script_dir, "convertidos")
 
     pastas = ["ENTRADA", "SAÍDA", "EXTRATOS BANCÁRIOS"]

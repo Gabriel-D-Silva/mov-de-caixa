@@ -3,6 +3,7 @@ from datetime import date
 import tkinter as tk
 from tkinter import PhotoImage, filedialog, messagebox
 from rename_pastas import renomear_pastas_fim
+from mainfuntion import *
 
 hoje = date.today()
 pastas = ["ENTRADA", "SAÍDA", "EXTRATOS BANCÁRIOS"]
@@ -55,7 +56,7 @@ frame_bottom = tk.Frame(root)
 botao1 = tk.Button(frame_bottom, text=t2, command=criarPastaCaixa, 
     bg="#FFFF00", fg="black", font=("Helvetica", 12, "bold"), relief="raised", bd=3, padx=10, pady=5)
 botao1.pack(side="left", padx=10, pady=20)
-botao2 = tk.Button(frame_bottom, text=t3,
+botao2 = tk.Button(frame_bottom, text=t3, command=lambda :confirmarTexto(root),
     bg="#4CAF50", fg="black", font=("Helvetica", 12, "bold"), relief="raised", bd=3, padx=10, pady=5)
 botao2.pack(side="right", padx=10, pady=20)
 frame_bottom.pack()
