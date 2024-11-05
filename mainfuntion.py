@@ -1,22 +1,15 @@
-def pegarTexto(imagem):
-    import pytesseract
-    from os import path
-
-    # Inicializa o Tesseract
-    pytesseract.pytesseract.tesseract_cmd = path.join((path.dirname(__file__), "dependencies", "Tesseract-OCR", "tesseract.exe"))
-    # Extrai o texto da imagem
-    texto = pytesseract.image_to_string(imagem, lang="por")
-
-    return texto
-
 def confirmarTexto(root):
     import tkinter as tk
     from tkinter import messagebox, filedialog
     from Convert import converterPDFS
     from rename_pastas import renomear_pastas_inicio, renomear_pastas_fim
+    from verif_window import criarJanela
     import os
+    from datetime import date
 
-    dados = {}
+    filepath = os.path.dirname(__file__)
+
+    dados = {"DATA":[], "HISTÓRICO":[], "NF/RECIBO":[], "ENTRADA":[], "SAÍDA":[], "TOTAL":[]}
     
     messagebox.showinfo("Instrução", "Coloque o caminho da pasta como foi mostrado")
     path = filedialog.askdirectory()
@@ -48,25 +41,31 @@ def confirmarTexto(root):
 
     renomear_pastas_fim(path)
 
-    def bloquearFechamento():
-        messagebox.showwarning("Ação Bloqueada", "Você não pode fechar esta janela.")
-
     ##### CRIA A PASTA QUE O APLICATIVO VAI USAR PARA COISAR
 
     messagebox.showinfo("Sucesso", "Aguarde alguns minutos pacientemente")
 
     converterPDFS(path)
 
-    print("FEITO!")
+    messagebox.showinfo("Sucesso", "O aplicativo vai conferir os valores dos documentos, verifique se os valores estão corretos")
 
-    #### CRIA A JANELA, A CADA BOLETO PARA SER CONFIRMADO, UMA JANELA NOVA DEVE SER CRIADA
+    ### LOOP PARA PERCORRER TODOS OS ARQUIVOS CONVERTIDOS E CRIAR UMA JANELA DE CONFIRMAÇÃO PRA
+    ### CADA CABRUNCO FEIO DESSE
 
-    janela = tk.Toplevel()
+    convertidos = os.path.join(filepath, "convertidos", f"{date.today()}")
 
-    # Manter a janela no topo
-    janela.transient(root)
-    janela.attributes("-topmost", True)
+    for pasta in pastas:
+        for i in range(1,13):
+            if i < 10:
+                arquivos = os.listdir(f"{convertidos}\\{pasta}\\0{i}")
+                for arquivo in arquivos:
+                    arquivo_path = os.path.join(convertidos, f"{pasta}", f"0{i}", arquivo)
+                    criarJanela(arquivo_path, root)
+            else:
+                arquivos = os.listdir(f"{convertidos}\\{pasta}\\{i}")
+                for arquivo in arquivos:
+                    arquivo_path = os.path.join(convertidos, f"{pasta}", f"{i}", arquivo)
+                    criarJanela(arquivo_path, root)
 
-    janela.protocol("WM_DELETE_WINDOW", bloquearFechamento)
 
 
