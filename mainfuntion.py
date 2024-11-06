@@ -8,8 +8,6 @@ def confirmarTexto(root):
     from datetime import date
 
     filepath = os.path.dirname(__file__)
-
-    dados = {"DATA":[], "HISTÓRICO":[], "NF/RECIBO":[], "ENTRADA":[], "SAÍDA":[], "TOTAL":[]}
     
     messagebox.showinfo("Instrução", "Coloque o caminho da pasta como foi mostrado")
     path = filedialog.askdirectory()
@@ -54,13 +52,21 @@ def confirmarTexto(root):
 
     convertidos = os.path.join(filepath, "convertidos", f"{date.today()}")
 
+    import pytesseract
+
+    # Inicializa o Tesseract
+    tesseract_path = os.path.join(f"{os.path.dirname(__file__)}", "dependencies", "Tesseract-OCR", "tesseract.exe")
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+
     for pasta in pastas:
         for i in range(1,13):
             if i < 10:
+                planilha = {"DATA":[], "HISTÓRICO":[1], "NF/RECIBO":[], "ENTRADA":[1], "SAÍDA":[1]}
                 arquivos = os.listdir(f"{convertidos}\\{pasta}\\0{i}")
                 for arquivo in arquivos:
                     arquivo_path = os.path.join(convertidos, f"{pasta}", f"0{i}", arquivo)
-                    criarJanela(arquivo_path, root)
+                    dados = criarJanela(arquivo_path, root)
+
             else:
                 arquivos = os.listdir(f"{convertidos}\\{pasta}\\{i}")
                 for arquivo in arquivos:

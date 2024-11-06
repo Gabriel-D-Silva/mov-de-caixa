@@ -1,11 +1,10 @@
 def criarJanela(arquivo, root):
     import tkinter as tk
     from tkinter import messagebox
-    from catchtext import pegarValor
+    from catchtext import pegarData, pegarNF, pegarTitulo, pegarValor
 
     def bloquearFechamento():
         messagebox.showwarning("Ação Bloqueada", "Você não pode fechar esta janela.")
-
     
     # Cria uma janela toplevel
     janela = tk.Toplevel()
@@ -19,8 +18,11 @@ def criarJanela(arquivo, root):
     botao_fechar = tk.Button(janela, text="Fechar", command=janela.destroy)
     botao_fechar.pack(pady=20)
 
-    valor = pegarValor(arquivo)
-    print(valor)
-    print("------------------------------")
+    pegarTitulo(arquivo)
+    pegarValor(arquivo)
+    pegarData(arquivo)
+    pegarNF(arquivo)
 
+    print("----------------------------------------------------------------------------------------------")
+    
     root.wait_window(janela)
